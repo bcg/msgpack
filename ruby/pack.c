@@ -115,9 +115,14 @@ static VALUE MessagePack_Fixnum_to_msgpack(int argc, VALUE *argv, VALUE self)
 	return out;
 }
 
-
-#ifndef RBIGNUM_SIGN  // Ruby 1.8
-#define RBIGNUM_SIGN(b) (RBIGNUM(b)->sign)
+#ifndef RBIGNUM_SIGN  // Rubinius or Ruby 1.8
+  #ifdef RUBINIUS
+    #define RBIGNUM_SIGN(b) (rb_big_sign(b))
+  #elif defined(RBIGNUM)
+    #define RBIGNUM_SIGN(b) (RBIGNUM(b)->sign)
+  #else
+    #error "Not sure what Ruby VM you are using"
+  #endif
 #endif
 
 /*

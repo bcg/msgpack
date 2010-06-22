@@ -27,6 +27,11 @@ static ID s_readpartial;
 int s_ascii_8bit;
 #endif
 
+#ifdef RUBINIUS
+void rb_gc_enable() { return; }
+void rb_gc_disable() { return; }
+#endif
+
 struct unpack_buffer {
 	size_t size;
 	size_t free;
